@@ -24,15 +24,11 @@ export const UserSelector: React.FC<Props> = ({
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
 
-  const loadUsers = () => {
+  useEffect(() => {
     getUsers()
       .then(setUsers)
       .catch(() => setErrorMessage('Something went wrong!'));
-  };
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
+  }, [setErrorMessage]);
 
   const handleSelect = async (user: User) => {
     setIsLoading(true);

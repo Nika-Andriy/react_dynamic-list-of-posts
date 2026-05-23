@@ -23,15 +23,24 @@ export const NewCommentForm: React.FC<Props> = ({
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasBodyError, setHasBodyError] = useState(false);
 
+  function clearInputErrors() {
+    setHasNameError(false);
+    setHasEmailError(false);
+    setHasBodyError(false);
+  }
+
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHasNameError(false);
     setName(event.target.value);
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHasEmailError(false);
     setEmail(event.target.value);
   };
 
   const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setHasBodyError(false);
     setBody(event.target.value);
   };
 
@@ -39,9 +48,7 @@ export const NewCommentForm: React.FC<Props> = ({
     setEmail('');
     setName('');
     setBody('');
-    setHasNameError(false);
-    setHasEmailError(false);
-    setHasBodyError(false);
+    clearInputErrors();
   };
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
@@ -75,9 +82,7 @@ export const NewCommentForm: React.FC<Props> = ({
       .then(createdComment => {
         setComments(currentComments => [...currentComments, createdComment]);
         setBody('');
-        setHasNameError(false);
-        setHasEmailError(false);
-        setHasBodyError(false);
+        clearInputErrors();
       })
       .catch(() => setErrorMessage('cant add a comment'))
       .finally(() => setIsCommentAdding(false));

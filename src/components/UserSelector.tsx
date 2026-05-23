@@ -8,7 +8,7 @@ type Props = {
   selectedUser: User | null;
   setOpenPostId: (id: number | null) => void;
   setIsLoading: (load: boolean) => void;
-  setSelectedUser: (user: User) => void;
+  setSelectedUser: (user: User | null) => void;
   setErrorMessage: (error: string) => void;
   setPosts: (posts: Post[]) => void;
 };

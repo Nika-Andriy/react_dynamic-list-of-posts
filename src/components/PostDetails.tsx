@@ -47,112 +47,90 @@ export const PostDetails: React.FC<Props> = ({
   }, [openPostId, setErrorMessage, setIsLoading]);
 
   const handleDelete = (commentId: number) => {
-    deleteComment(commentId)
-      .then(() =>
-        setComments(currentComments =>
-          currentComments.filter(comment => comment.id !== commentId),
-        ),
-      )
-      .catch(() => setErrorMessage('Cant delete a comment'))
-      .finally();
+    setComments(currentComments =>
+      currentComments.filter(comment => comment.id !== commentId),
+    );
+
+    deleteComment(commentId).catch(() =>
+      setErrorMessage('Cant delete a comment'),
+    );
   };
 
   return (
     <div className="content" data-cy="PostDetails">
-      <div className="content" data-cy="PostDetails">
-        <div className="block">
-          <h2 data-cy="PostTitle">{`#${post?.id}: ${post?.title}`}</h2>
+      <div className="block">
+        <h2 data-cy="PostTitle">{`#${post?.id}: ${post?.title}`}</h2>
 
-          <p data-cy="PostBody">{post?.body}</p>
-        </div>
+        <p data-cy="PostBody">{post?.body}</p>
+      </div>
 
-        <div className="block">
-          <Loader isLoading={isLoading} />
+      <div className="block">
+        <Loader isLoading={isLoading} />
 
-          {errorMessage && (
-            <div className="notification is-danger" data-cy="CommentsError">
-              {errorMessage}
-            </div>
-          )}
+        {errorMessage && (
+          <div className="notification is-danger" data-cy="CommentsError">
+            {errorMessage}
+          </div>
+        )}
 
-          {!isLoading && !errorMessage && comments.length < 1 && (
-            <p className="title is-4" data-cy="NoCommentsMessage">
-              No comments yet
-            </p>
-          )}
+        {!isLoading && !errorMessage && comments.length < 1 && (
+          <p className="title is-4" data-cy="NoCommentsMessage">
+            No comments yet
+          </p>
+        )}
 
-          {!isLoading && comments.length > 0 && (
-            <p className="title is-4">Comments:</p>
-          )}
+        {!isLoading && comments.length > 0 && (
+          <p className="title is-4">Comments:</p>
+        )}
 
-          {comments.map(comment => {
-            return (
-              <>
-                <article className="message is-small" data-cy="Comment">
-                  <div className="message-header">
-                    <a href={`mailto:${comment.email}`} data-cy="CommentAuthor">
-                      {comment.name}
-                    </a>
-                    <button
-                      data-cy="CommentDelete"
-                      type="button"
-                      className="delete is-small"
-                      aria-label="delete"
-                      onClick={() => handleDelete(comment.id)}
-                    >
-                      delete button
-                    </button>
-                  </div>
-
-                  <div className="message-body" data-cy="CommentBody">
-                    {comment.body}
-                  </div>
-                </article>
-              </>
-            );
-          })}
-
-          {!isAddFormOpen && !isLoading && !errorMessage && (
-            <button
-              data-cy="WriteCommentButton"
-              type="button"
-              className="button is-link"
-              onClick={() => setIsAddFormOpen(true)}
+        {comments.map(comment => {
+          return (
+            <article
+              className="message is-small"
+              data-cy="Comment"
+              key={comment.id}
             >
-              Write a comment
-            </button>
-          )}
-        </div>
+              <div className="message-header">
+                <a href={`mailto:${comment.email}`} data-cy="CommentAuthor">
+                  {comment.name}
+                </a>
+                <button
+                  data-cy="CommentDelete"
+                  type="button"
+                  className="delete is-small"
+                  aria-label="delete"
+                  onClick={() => handleDelete(comment.id)}
+                >
+                  delete button
+                </button>
+              </div>
 
-        {isAddFormOpen && (
-          <NewCommentForm
-            post={post}
-            setErrorMessage={setErrorMessage}
-            setComments={setComments}
-          />
+              <div className="message-body" data-cy="CommentBody">
+                {comment.body}
+              </div>
+            </article>
+          );
+        })}
+
+        {!isAddFormOpen && !isLoading && !errorMessage && (
+          <button
+            data-cy="WriteCommentButton"
+            type="button"
+            className="button is-link"
+            onClick={() => setIsAddFormOpen(true)}
+          >
+            Write a comment
+          </button>
         )}
       </div>
+
+      {isAddFormOpen && (
+        <NewCommentForm
+          post={post}
+          setErrorMessage={setErrorMessage}
+          setComments={setComments}
+        />
+      )}
     </div>
   );
 };
-
-// {<article className="message is-small" data-cy="Comment">
-//             <div className="message-header">
-//               <a href="mailto:misha@mate.academy" data-cy="CommentAuthor">
-//                 Misha Hrynko
-//               </a>
-
-//               <button
-//                 data-cy="CommentDelete"
-//                 type="button"
-//                 className="delete is-small"
-//                 aria-label="delete"
-//               >
-//                 delete button
-//               </button>
-//             </div>
-
-//             <div className="message-body" data-cy="CommentBody">
-//               {'Multi\nline\ncomment'}
-//             </div>
-//           </article>}

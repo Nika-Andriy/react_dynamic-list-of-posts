@@ -53,7 +53,7 @@ export const App = () => {
                   </div>
                 )}
 
-                {selectedUser && posts.length === 0 && (
+                {selectedUser && !isPostsLoading && posts.length === 0 && (
                   <div className="notification is-warning" data-cy="NoPostsYet">
                     No posts yet
                   </div>
